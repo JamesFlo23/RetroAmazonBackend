@@ -15,6 +15,7 @@ router.get('/list',(req, res) => {
   debug('Getting all books');
   res.status(200).json(books);
 });
+
 //get a book by the id
 router.get('/book/:id', (req, res) => {
   const id = req.params.id;
@@ -26,6 +27,7 @@ router.get('/book/:id', (req, res) => {
     res.status(404).send({message: `Book ${id} not found`});
   }
 });
+
 //delete book from array
 router.delete('/book/:id',(req, res) => {
   //gets id from url
@@ -42,7 +44,6 @@ router.delete('/book/:id',(req, res) => {
 router.post('/books/add', (req, res) => {
   const newBook = req.body;
   //if new book is empty object
-
   if(newBook){
   //add unique id
   const id = books.length + 1;
@@ -55,27 +56,29 @@ router.post('/books/add', (req, res) => {
   }
 });
 
-//update a book by the id
-//update can use a put or a post
+//update a book by the id -- update can use a put or a post
 router.put('/book/:id', (req, res) =>{
   const id = req.params.id;
   const currentBook = books.find(book => book._id == id);
   //for this to work you have to have a body parser
   const updatedBook = req.body;
-if(currentBook){
-  for(const key in updatedBook){
-    if(currentBook[key] != updatedBook[key]){
-      currentBook[key] = updatedBook[key];
-    }
-  }
-      const index = books.findIndex(book => book._id == id);
-        if(index != -1){
-        books[index] = currentBook;
+    if(currentBook){
+      for(const key in updatedBook){
+        if(currentBook[key] != updatedBook[key]){
+          currentBook[key] = updatedBook[key];
         }
-        res.status(200).send(`Book ${id} updated`)
-}else{
-  res.status(404).send({message: `Book ${id} not found`});
-}
+      }
+  //save the current book back into the array
+      const index = books.findIndex(book => book._id == id);
+      if(index != -1){
+          books[index] = currentBook;
+        }
+      res.status(200).send(`Book ${id} updated`)
+    }
+    else{
+      res.status(404).send({message: `Book ${id} not found`});
+    }
+  res.json(updatedBook);
 });
 
 
