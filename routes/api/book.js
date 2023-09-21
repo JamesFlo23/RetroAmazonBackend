@@ -43,16 +43,17 @@ router.delete('/book/:id',(req, res) => {
 //add a new book to the array
 router.post('/books/add', (req, res) => {
   const newBook = req.body;
-  //if new book is empty object
-  if(newBook){
-  //add unique id
-  const id = books.length + 1;
-  newBook._id = id;
-  //add the book to the books array
-  books.push(newBook);
-  res.status(200).json({message:`Book ${newBook.title} added`});
-  }else{
-    res.status(400).json({message: `Error in adding book`});
+    //if new book is not an empty object
+    if(newBook){
+      //add unique id
+    const id = books.length + 1;
+    newBook._id = id;
+      //add the book to the books array
+    books.push(newBook);
+    res.status(200).json({message:`Book ${newBook.title} added`});
+  }
+    else{
+      res.status(400).json({message: `Error in adding book`});
   }
 });
 
