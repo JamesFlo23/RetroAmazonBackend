@@ -61,6 +61,12 @@ async function addUser(user){
   return result;
 }
 
+async function loginUser(user){
+  const db = await connect();
+  const resultUser = await db.collection("User").findOne({email:user.email});
+  return resultUser;
+}
+
 ping();
 
-export {connect,ping,getBooks,getBookById,addBook,updateBook,deleteBook,addUser}
+export {connect,ping,getBooks,getBookById,addBook,updateBook,deleteBook,addUser,loginUser}
