@@ -1,6 +1,7 @@
 import express from 'express';
 import debug from 'debug';
-const debugBook = debug('app:book');
+const debugBook = debug('app:Book');
+import { connect, getBooks,getBookById,updateBook,addBook,deleteBook} from '../../database.js';
 
 const router = express.Router();
 const books = [
@@ -11,75 +12,75 @@ const books = [
   {"title":"Muppet Christmas: Letters to Santa, A","author":"Natala Amar","publication_date":"1/18/1914","genre":"non-fiction","_id":5}
 ]
 //get all books
-router.get('/list',(req, res) => {
-  debug('Getting all books');
-  res.status(200).json(books);
+router.get('/list', async (req, res) => {
+  debugBook('Getting all books');
+  try{
+    const db = await connect();
+    const books = await getBooks();
+    res.status(200).json(books);
+  }catch(err){
+    res.status(500).json({error:err.stack})
+  }
 });
 
 //get a book by the id
-router.get('/book/:id', (req, res) => {
+router.get('/book/:id',async (req, res) => {
   const id = req.params.id;
-  const book = books.find(book => book._id == id);
-  if(book){
-  res.status(200).send(book);
-  }
-  else{
-    res.status(404).send({message: `Book ${id} not found`});
+  try{
+    const book = await getBookById();
+    res.status(200).json(book);
+  }catch(err){
+    res.status(500).json({error:err.stack});
   }
 });
 
 //delete book from array
-router.delete('/book/:id',(req, res) => {
+router.delete('/delete/:id',async (req, res) => {
   //gets id from url
   const id = req.params.id;
-  const index = books.findIndex(book => book._id == id);
-  if(index != -1){
-    books.splice(200).send(`Book ${id} deleted`);
-  }else{
-    res.status(400).json({message:`Book ${id} not found`});
+  const dbResult = await deleteBook(id);
+  try{
+    if(dbResult.deletedCount ==1){
+      res.status(200).json({message: `Book ${id} deleted`});
+    }else{
+      res.status(400).json({message: `Book ${id} not deleted`});
+    }
+  }
+  catch(err){
+    res.status(500).json({error: err.stack});
   }
 });
 
 //add a new book to the array
-router.post('/books/add', (req, res) => {
+router.post('/books/add', async (req, res) => {
   const newBook = req.body;
-    //if new book is not an empty object
-    if(newBook){
-      //add unique id
-    const id = books.length + 1;
-    newBook._id = id;
-      //add the book to the books array
-    books.push(newBook);
-    res.status(200).json({message:`Book ${newBook.title} added`});
+  const dbResult = await addBook(newBook);
+  try{
+  if(dbResult.acknowledge == true){
+    res.status(200).json({message: `Book ${newBook.title} added with an id of ${dbResult.insertedId}`});
+  }else{
+    res.status(400).json({message: `Book ${newBook.title} not added`});
   }
-    else{
-      res.status(400).json({message: `Error in adding book`});
-  }
+}catch(err){
+  res.status(500).json({error:err.stack});
+}
 });
 
 //update a book by the id -- update can use a put or a post
-router.put('/book/:id', (req, res) =>{
+router.put('/update/:id', async (req, res) =>{
   const id = req.params.id;
-  const currentBook = books.find(book => book._id == id);
-  //for this to work you have to have a body parser
   const updatedBook = req.body;
-    if(currentBook){
-      for(const key in updatedBook){
-        if(currentBook[key] != updatedBook[key]){
-          currentBook[key] = updatedBook[key];
-        }
-      }
-  //save the current book back into the array
-      const index = books.findIndex(book => book._id == id);
-      if(index != -1){
-          books[index] = currentBook;
-        }
-      res.status(200).send(`Book ${id} updated`)
-    }
-    else{
-      res.status(404).send({message: `Book ${id} not found`});
-    }
-  res.json(updatedBook);
+try{
+  const updatedResult = await updateBook(id,updatedBook);
+  if(updatedResult.modifiedCount == 1){
+    res.status(200).json({message:`Book ${id} updated`});
+  }else{
+    res.status(400).json({message:`Book ${id} not updated`});
+  }
+}catch(err){
+  res.status(500).json({error:err.stack});
+}
+  
 });
 
 
