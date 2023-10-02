@@ -1,7 +1,7 @@
 import express from 'express';
 import debug from 'debug';
 const debugBook = debug('app:Book');
-import { connect, getBooks,getBookById,updateBook,addBook,deleteBook} from '../../database.js';
+import { connect,getBooks,getBookById,updateBook,addBook,deleteBook} from '../../database.js';
 
 const router = express.Router();
 const books = [

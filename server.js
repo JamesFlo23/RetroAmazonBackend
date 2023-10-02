@@ -22,7 +22,7 @@ app.use('/api/users',UserRouter);
 
 //error handling middleware
 app.use((req,res) =>{
-  res.status(404).json({error:`Sorry coudn't find ${req.originalUrl}`});
+  res.status(404).json({error:`Sorry couldn't find ${req.originalUrl}`});
 });
 
 //handle server exceptions to keep server from crashing
