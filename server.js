@@ -17,8 +17,8 @@ const app = express();
   //middleware
 //allow form data
 app.use(express.urlencoded({extended: true}));
-app.use('/api/books', BookRouter);
-app.use('/api/users',UserRouter);
+app.use('/api/book', BookRouter);
+app.use('/api/user',UserRouter);
 
 //error handling middleware
 app.use((req,res) =>{

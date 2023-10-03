@@ -5,7 +5,7 @@ import { MongoClient, ObjectId } from "mongodb";
 import debug from "debug";
 const debugDatabase = debug("app:Database");
 
-const newId = (str) => new ObjectId(str);
+//const newId = (str) => new ObjectId(str);
 let _db = null;
 
 async function connect(){

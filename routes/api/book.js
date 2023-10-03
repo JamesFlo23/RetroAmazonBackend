@@ -4,13 +4,13 @@ const debugBook = debug('app:Book');
 import { connect,getBooks,getBookById,updateBook,addBook,deleteBook} from '../../database.js';
 
 const router = express.Router();
-const books = [
-  {"title":"Country Bears, The","author":"Vince Glader","publication_date":"10/25/1907","genre":"mystery","_id":1},
-  {"title":"Secret Things (Choses secrètes)","author":"Betteanne Copley","publication_date":"8/28/1978","genre":"non-fiction","_id":2},
-  {"title":"Fitna","author":"Heall Markham","publication_date":"5/31/1936","genre":"non-fiction","_id":3},
-  {"title":"Words, The","author":"Kelly Benech","publication_date":"11/9/1958","genre":"non-fiction","_id":4},
-  {"title":"Muppet Christmas: Letters to Santa, A","author":"Natala Amar","publication_date":"1/18/1914","genre":"non-fiction","_id":5}
-]
+//const books = [
+  //{"title":"Country Bears, The","author":"Vince Glader","publication_date":"10/25/1907","genre":"mystery","_id":1},
+  //{"title":"Secret Things (Choses secrètes)","author":"Betteanne Copley","publication_date":"8/28/1978","genre":"non-fiction","_id":2},
+  //{"title":"Fitna","author":"Heall Markham","publication_date":"5/31/1936","genre":"non-fiction","_id":3},
+  //{"title":"Words, The","author":"Kelly Benech","publication_date":"11/9/1958","genre":"non-fiction","_id":4},
+  //{"title":"Muppet Christmas: Letters to Santa, A","author":"Natala Amar","publication_date":"1/18/1914","genre":"non-fiction","_id":5}
+//];
 //get all books
 router.get('/list', async (req, res) => {
   debugBook('Getting all books');
@@ -24,10 +24,10 @@ router.get('/list', async (req, res) => {
 });
 
 //get a book by the id
-router.get('/book/:id',async (req, res) => {
+router.get('/:id',async (req, res) => {
   const id = req.params.id;
   try{
-    const book = await getBookById();
+    const book = await getBookById(id);
     res.status(200).json(book);
   }catch(err){
     res.status(500).json({error:err.stack});
@@ -52,7 +52,7 @@ router.delete('/delete/:id',async (req, res) => {
 });
 
 //add a new book to the array
-router.post('/books/add', async (req, res) => {
+router.post('/add', async (req, res) => {
   const newBook = req.body;
   const dbResult = await addBook(newBook);
   try{
