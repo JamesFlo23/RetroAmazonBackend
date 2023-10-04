@@ -1,7 +1,7 @@
 import express from 'express';
 import debug from 'debug';
 const debugBook = debug('app:Book');
-import { connect,getBooks,getBookById,updateBook,addBook,deleteBook} from '../../database.js';
+import { getBooks,getBookById,updateBook,addBook,deleteBook} from '../../database.js';
 
 const router = express.Router();
 //const books = [
@@ -15,7 +15,6 @@ const router = express.Router();
 router.get('/list', async (req, res) => {
   debugBook('Getting all books');
   try{
-    const db = await connect();
     const books = await getBooks();
     res.status(200).json(books);
   }catch(err){
@@ -54,9 +53,9 @@ router.delete('/delete/:id',async (req, res) => {
 //add a new book to the array
 router.post('/add', async (req, res) => {
   const newBook = req.body;
-  const dbResult = await addBook(newBook);
   try{
-  if(dbResult.acknowledge == true){
+    const dbResult = await addBook(newBook);
+  if(dbResult.acknowledged == true){
     res.status(200).json({message: `Book ${newBook.title} added with an id of ${dbResult.insertedId}`});
   }else{
     res.status(400).json({message: `Book ${newBook.title} not added`});

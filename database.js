@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-
 import { MongoClient, ObjectId } from "mongodb";
 import debug from "debug";
 const debugDatabase = debug("app:Database");
@@ -37,11 +36,11 @@ async function getBooks(){
 async function getBookById(id){
   const db = await connect();
   const book = await db.collection("Book").findOne({_id: new ObjectId(id)});
-  debugDatabase("Got books by id");
+  debugDatabase("Got book by id");
   return book;
 }
 
-async function addBook(){
+async function addBook(book){
   const db = await connect();
   const result = await db.collection("Book").insertOne(book);
   debugDatabase(result.insertedId);
