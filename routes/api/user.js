@@ -2,18 +2,23 @@ import express from 'express';
 import debug from 'debug';
 const debugUser = debug('app:User');
 debugUser.color = '63';
-import {addUser,loginUser} from '../../database.js';
+import {getUsers,addUser,loginUser} from '../../database.js';
 const router = express.Router();
 import bcrypt from 'bcrypt';
 
-router.get('/list', (req,res) => {
+router.get('/list', async (req,res) => {
   debugUser('Getting all users');
-  res.send('Hello from amazon.com user route.');
+  try{
+    const users = await getUsers();
+    res.status(200).json(users);
+  }catch(err){
+    res.status(500).json({error:err.stack})
+  }
 });
 
 router.post('/add',async (req,res) =>{
   const newUser = req.body;
-  newUser.password = await bcrypt.hash(newUser.password, 10);
+  newUser.password = await bcrypt.hash(newUser.password, 10);//this just hashes the new password
   try{
     const result = await addUser(newUser);
     res.status(200).json({message: `User ${result.insertedId} added`});

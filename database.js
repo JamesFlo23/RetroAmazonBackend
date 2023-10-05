@@ -61,7 +61,14 @@ async function deleteBook(id){
   debugDatabase("Book deleted");
   return result;
 }
-
+async function getUsers(){
+  const db = await connect();
+  //MongoSH command to find all books: db.books.find({})
+  //find() returns a cursor, which is not the data itself, but a pointer to the result set of a query
+  const users = await db.collection("User").find().toArray();
+  debugDatabase("Got users");
+  return users;
+}
 async function addUser(user){
   const db = await connect();
   user.role = ['customer'];
@@ -86,4 +93,4 @@ async function loginUser(user){
 
 ping();
 
-export {connect,ping,getBooks,getBookById,addBook,updateBook,deleteBook,addUser,loginUser}
+export {connect,ping,getBooks,getBookById,addBook,updateBook,deleteBook,getUsers,addUser,loginUser}
