@@ -1,5 +1,5 @@
 {
-  "name": "retroamazonbackend",
+  "name": "RetroAmazonBackend",
   "version": "1.0.0",
   "description": "We are building a MERN full stack mock amazon.com from the early days",
   "main": "server.js",
@@ -22,6 +22,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "joi": "^17.11.0",
     "mongodb": "^6.1.0",
     "nodemon": "^3.0.1"
   }
