@@ -61,6 +61,7 @@ async function deleteBook(id){
   debugDatabase("Book deleted");
   return result;
 }
+
 async function getUsers(){
   const db = await connect();
   //MongoSH command to find all books: db.books.find({})
@@ -69,6 +70,7 @@ async function getUsers(){
   debugDatabase("Got users");
   return users;
 }
+
 async function addUser(user){
   const db = await connect();
   user.role = ['customer'];

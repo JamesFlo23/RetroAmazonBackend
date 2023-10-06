@@ -71,6 +71,7 @@ router.put('/update/:id', async (req, res) =>{
   const updatedBook = req.body;
 try{
   const updatedResult = await updateBook(id,updatedBook);
+  debugBook(updatedResult);
   if(updatedResult.modifiedCount == 1){
     res.status(200).json({message:`Book ${id} updated`});
   }else{
