@@ -12,7 +12,7 @@ import Joi from 'joi';
 const newUserSchema = Joi.object({
   fullName:Joi.string().trim().min(1).max(50).required(),
   password:Joi.string().trim().min(8).max(50).required(),
-  email:Joi.string().trim().email().required()
+  email:Joi.string().trim().email().required(),
 });
 //step 2
 const loginUserSchema = Joi.object({
