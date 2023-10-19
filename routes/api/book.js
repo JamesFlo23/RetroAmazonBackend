@@ -21,7 +21,6 @@ router.get('/list', async (req, res) => {
     res.status(500).json({error:err.stack})
   }
 });
-
 //get a book by the id
 router.get('/:id',async (req, res) => {
   const id = req.params.id;
@@ -32,7 +31,6 @@ router.get('/:id',async (req, res) => {
     res.status(500).json({error:err.stack});
   }
 });
-
 //delete book from array
 router.delete('/delete/:id',async (req, res) => {
   //gets id from url
@@ -49,7 +47,6 @@ router.delete('/delete/:id',async (req, res) => {
     res.status(500).json({error: err.stack});
   }
 });
-
 //add a new book to the array
 router.post('/add', async (req, res) => {
   const newBook = req.body;
@@ -64,7 +61,6 @@ router.post('/add', async (req, res) => {
   res.status(500).json({error:err.stack});
 }
 });
-
 //update a book by the id -- update can use a put or a post
 router.put('/update/:id', async (req, res) =>{
   const id = req.params.id;
@@ -82,6 +78,5 @@ try{
 }
   
 });
-
 
 export {router as BookRouter};
