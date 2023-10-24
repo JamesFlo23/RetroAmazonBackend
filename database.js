@@ -7,6 +7,7 @@ const debugDatabase = debug("app:Database");
 //const newId = (str) => new ObjectId(str);
 let _db = null;
 
+
 async function connect(){
   if(!_db){
     const connectionString = process.env.DB_URL;
@@ -24,6 +25,7 @@ async function ping(){
   debugDatabase("Ping.");
 }
 
+//Book
 async function getBooks(){
   const db = await connect();
   //MongoSH command to find all books: db.books.find({})
@@ -62,6 +64,7 @@ async function deleteBook(id){
   return result;
 }
 
+//User
 async function getUsers(){
   const db = await connect();
   //MongoSH command to find all books: db.books.find({})

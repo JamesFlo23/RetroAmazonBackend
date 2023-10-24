@@ -14,8 +14,7 @@ const debugServer = debug('app:Server');
 
 const app = express();
 app.use(express.static('public'));
-  //middleware
-//allow form data
+//middleware
 app.use(express.urlencoded({extended: true}));
 app.use('/api/book', BookRouter);
 app.use('/api/user',UserRouter);

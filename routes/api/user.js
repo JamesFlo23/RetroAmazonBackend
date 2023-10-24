@@ -2,19 +2,20 @@ import express from 'express';
 import debug from 'debug';
 const debugUser = debug('app:User');
 debugUser.color = '63';
-import {getUsers,addUser,loginUser} from '../../database.js';
+import {connect,ping,getUsers,addUser,loginUser} from '../../database.js';
 const router = express.Router();
 import bcrypt from 'bcrypt';
-import {validBody} from '../../middleware/validBody.js'
 import Joi from 'joi';
+import { validBody } from '../../middleware/validBody.js';
+import { validId } from '../../middleware/validId.js';
 
-//step 1: define new user schema
+//step 1: 
 const newUserSchema = Joi.object({
   fullName:Joi.string().trim().min(1).max(50).required(),
   password:Joi.string().trim().min(8).max(50).required(),
   email:Joi.string().trim().email().required(),
 });
-//step 2
+//step 2:
 const loginUserSchema = Joi.object({
   email:Joi.string().trim().email().required(),
   password:Joi.string().trim().min(8).max(50).required()
@@ -41,7 +42,7 @@ router.post('/add',validBody(newUserSchema), async (req,res) =>{
   }
 });
 
-router.post('/login',async (req,res) =>{
+router.post('/login',validBody(loginUserSchema),async (req,res) =>{
   const user = req.body;
   const resultUser = await loginUser(user);
   debugUser(resultUser);
