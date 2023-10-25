@@ -34,21 +34,18 @@ async function getBooks(){
   debugDatabase("Got books");
   return books;
 }
-
 async function getBookById(id){
   const db = await connect();
   const book = await db.collection("Book").findOne({_id: new ObjectId(id)});
   debugDatabase("Got book by id");
   return book;
 }
-
 async function addBook(book){
   const db = await connect();
   const result = await db.collection("Book").insertOne(book);
   debugDatabase(result.insertedId);
   return result;
 }
-
 async function updateBook(id,updatedBook){
   const db = await connect();
   const result = await db.collection("Book").updateOne({_id:new ObjectId(id)},{$set:{...updatedBook}});
@@ -56,14 +53,12 @@ async function updateBook(id,updatedBook){
   debugDatabase("Book updated");
   return result;
 }
-
 async function deleteBook(id){
   const db = await connect();
   const result = await db.collection("Book").deleteOne({_id:new ObjectId(id)});
   debugDatabase("Book deleted");
   return result;
 }
-
 //User
 async function getUsers(){
   const db = await connect();
@@ -73,7 +68,6 @@ async function getUsers(){
   debugDatabase("Got users");
   return users;
 }
-
 async function addUser(user){
   const db = await connect();
   user.role = ['customer'];
@@ -81,7 +75,6 @@ async function addUser(user){
   debugDatabase("New user added.")
   return result;
 }
-
 async function loginUser(user){
   const db = await connect();
   const resultUser = await db.collection("User").findOne({email:user.email});
