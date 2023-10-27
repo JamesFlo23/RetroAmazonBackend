@@ -7,6 +7,7 @@ const debugDatabase = debug("app:Database");
 //const newId = (str) => new ObjectId(str);
 let _db = null;
 
+const newId = (str) => new ObjectId(str);
 
 async function connect(){
   if(!_db){
@@ -91,4 +92,4 @@ async function loginUser(user){
 
 ping();
 
-export {connect,ping,getBooks,getBookById,addBook,updateBook,deleteBook,getUsers,addUser,loginUser}
+export {connect,ping,getBooks,getBookById,addBook,updateBook,deleteBook,getUsers,addUser,loginUser,newId}
