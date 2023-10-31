@@ -8,6 +8,7 @@ import bcrypt from 'bcrypt';
 import Joi from 'joi';
 import { validBody } from '../../middleware/validBody.js';
 import jwt from 'jsonwebtoken';
+import { isLoggedIn, fetchRoles, hasPermission } from '@merlin4/express-auth';
 // import { validId } from '../../middleware/validId.js';
 
 
