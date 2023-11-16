@@ -2,6 +2,7 @@ import express from 'express';
 import { BookRouter } from './routes/api/book.js';
 import { UserRouter } from './routes/api/user.js';
 import * as dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 //import {connect} from './database.js';
 //import * as dbModule from './database.js';
@@ -14,6 +15,11 @@ import { authMiddleware } from '@merlin4/express-auth';
 
 const app = express();
 app.use(express.static('public'));
+app.use(express.json()); //accepts json data in the body of the request from the client. This and cors() must come before the routes
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+})); 
 app.use(cookieParser());
 app.use(authMiddleware(process.env.JWT_SECRET,'authToken',{
   httpOnly:true,

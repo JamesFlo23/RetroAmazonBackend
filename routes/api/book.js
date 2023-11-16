@@ -66,7 +66,7 @@ router.get('/list', async (req, res) => {
     debugBook(`Sort is ${JSON.stringify(sort)}`);
 
     pageNumber = parseInt(pageNumber) || 1;
-    pageSize = parseIt(pageSize) || 100;
+    pageSize = parseInt(pageSize) || 100;
       const skip = (pageNumber - 1) * pageSize;
       const limit = pageSize;
 

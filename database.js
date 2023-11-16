@@ -80,11 +80,11 @@ async function loginUser(user){
   const db = await connect();
   const resultUser = await db.collection("User").findOne({email:user.email});
   if(resultUser){
-    if(resultUser.password == user.password){
+    // if(resultUser.password == user.password){
       return resultUser;
-    }else{
-      return 'email or password incorrect';
-    }
+    // }else{
+    //   return 'email or password incorrect';
+    // }
   }else{
     return 'email or password incorrect';
   }
