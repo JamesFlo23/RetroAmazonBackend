@@ -86,7 +86,7 @@ async function loginUser(user){
     //   return 'email or password incorrect';
     // }
   }else{
-    return 'email or password incorrect';
+    return null;
   }
 }
 
