@@ -5,6 +5,7 @@ import {connect,ping,getBooks,getBookById,updateBook,addBook,deleteBook} from '.
 import Joi from 'joi';
 import { validBody } from '../../middleware/validBody.js';
 import { validId } from '../../middleware/validId.js';
+import { isLoggedIn, hasPermission } from '@merlin4/express-auth';
 
 const router = express.Router();
 
@@ -28,10 +29,7 @@ const updateBookSchema = Joi.object({
   description:Joi.string().trim().min(1),
 });
 
-router.get('/list', async (req, res) => {
-  //req.query
-  //a query string is a part of the URL that starts with a ?
-
+router.get('/list',isLoggedIn(), async (req, res) => {
 
   debugBook(`Getting all books, the query string is ${JSON.stringify(req.query)}`);
   let {keywords,minPrice,maxPrice,genre,sortBy,pageSize,pageNumber} = req.query;
@@ -87,7 +85,7 @@ router.get('/list', async (req, res) => {
   }
 });
 //get a book by the id
-router.get('/:id',validId('id'),async (req, res) => {
+router.get('/:id',isLoggedIn() ,validId('id'),async (req, res) => {
   const id = req.params.id;
   try{
     const book = await getBookById(id);
@@ -97,7 +95,7 @@ router.get('/:id',validId('id'),async (req, res) => {
   }
 });
 //add a new book to the array
-router.post('/add',validBody(newBookSchema), async (req, res) => {
+router.post('/add',isLoggedIn(),validBody(newBookSchema), async (req, res) => {
   const newBook = req.body;
   try{
     const dbResult = await addBook(newBook);
@@ -111,7 +109,7 @@ router.post('/add',validBody(newBookSchema), async (req, res) => {
 }
 });
 //update a book by the id -- update can use a put or a post
-router.put('/update/:id',validId('id'),validBody(updateBookSchema), async (req, res) =>{
+router.put('/update/:id',isLoggedIn(),validId('id'),validBody(updateBookSchema), async (req, res) =>{
   const id = req.params.id;
   const updatedBook = req.body;
 try{
@@ -128,7 +126,7 @@ try{
   
 });
 //delete book from array
-router.delete('/delete/:id',validId('id'),async (req, res) => {
+router.delete('/delete/:id',isLoggedIn(),validId('id'),async (req, res) => {
   //gets id from url
   const id = req.params.id;
   const dbResult = await deleteBook(id);
